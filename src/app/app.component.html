@@ -1,0 +1,432 @@
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-10 offset-1 border border-muted p-4">
+      <form [formGroup]="signUpForm" (ngSubmit)="onSignUp()">
+        <div class="form-group">
+          <label for="userName">UserName</label>
+          <input
+            type="text"
+            formControlName="userName"
+            class="form-control"
+            id="userName"
+          />
+          <strong
+            *ngIf="f['userName'].touched && f['userName'].hasError('required')"
+            class="text-danger"
+          >
+            UserName is required field.
+          </strong>
+
+          <ng-container *ngIf="f['userName'].dirty">
+            <strong
+              *ngIf="f['userName'].hasError('minlength')"
+              class="text-danger"
+            >
+              Minimum length of userName should be
+              {{f['userName'].errors?.['minlength'].requiredLength}} and actual
+              length is {{f['userName'].errors?.['minlength'].actualLength}}.
+            </strong>
+
+            <strong
+              *ngIf="f['userName'].hasError('maxlength')"
+              class="text-danger"
+            >
+              Maximum length of userName should be
+              {{f['userName'].errors?.['maxlength'].requiredLength}} and actual
+              length is {{f['userName'].errors?.['maxlength'].actualLength}}.
+            </strong>
+
+            <strong
+              *ngIf="f['userName'].hasError('pattern')"
+              class="text-danger"
+            >
+              Enter Valid UserName. {{ validationMsgs.onlyText }}.
+            </strong>
+
+            <strong
+              *ngIf="f['userName'].hasError('noSpaceBar')"
+              class="text-danger"
+            >
+              {{f['userName'].errors?.['noSpaceBar']}}.
+            </strong>
+          </ng-container>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="text"
+            placeholder="Eg. abc@example.com"
+            formControlName="email"
+            class="form-control"
+            id="email"
+          />
+          <div
+            *ngIf="f['email'].pending"
+            class="spinner-border spinner-border-sm text-primary mt-1 ml-2"
+            role="status"
+          >
+            <span class="sr-only">Loading...</span>
+          </div>
+
+          <strong
+            *ngIf="f['email'].dirty && f['email'].hasError('emailExistErr')"
+            class="text-danger"
+          >
+            {{f['email'].errors?.['emailExistErr']}}
+          </strong>
+
+          <strong
+            *ngIf="f['email'].touched && f['email'].hasError('required')"
+            class="text-danger"
+          >
+            Email Id is required field.
+          </strong>
+
+          <ng-container *ngIf="f['email'].dirty">
+            <strong *ngIf="f['email'].hasError('pattern')" class="text-danger">
+              {{ validationMsgs.email }}
+            </strong>
+
+            <strong
+              *ngIf="f['email'].hasError('noSpaceBar')"
+              class="text-danger"
+            >
+              {{f['email'].errors?.['noSpaceBar']}}.
+            </strong>
+
+            <strong *ngIf="f['email'].valid" class="text-success">
+              Email Id is available
+            </strong>
+          </ng-container>
+        </div>
+
+        <div class="form-group">
+          <label for="empId">Employee Id</label>
+          <input
+            type="text"
+            placeholder="Eg. E123"
+            formControlName="empId"
+            class="form-control"
+            id="empId"
+          />
+
+          <strong
+            *ngIf="f['empId'].touched && f['empId'].hasError('required')"
+            class="text-danger"
+          >
+            Employee Id is required field.
+          </strong>
+
+          <strong
+            *ngIf="f['empId'].dirty && f['empId'].hasError('EmpIdErr')"
+            class="text-danger"
+          >
+            {{f['empId'].errors?.['EmpIdErr']}}
+          </strong>
+        </div>
+
+        <div class="form-group">
+          <label class="mr-3" *ngFor="let gender of genderArr" [for]="gender">
+            <input
+              type="radio"
+              formControlName="gender"
+              [value]="gender"
+              [id]="gender"
+            />
+            <span class="ml-2">{{ gender | titlecase }}</span>
+          </label>
+        </div>
+
+        <div class="row p-2 mb-2">
+          <div class="col-md-12 py-2">
+            <div class="form-check">
+              <input
+                formControlName="isAddressSame"
+                class="form-check-input isAddressSame"
+                type="checkbox"
+                id="isAddressSame"
+              />
+              <label class="form-check-label" for="isAddressSame">
+                Are Both Addresses Same?
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-6" formGroupName="currentAdress">
+            <h2>Current Address</h2>
+            <div class="form-group">
+              <label for="ca-country">Country</label>
+              <select
+                formControlName="country"
+                id="ca-country"
+                class="form-control"
+              >
+                <option *ngFor="let c of countriesArr" [value]="c.Country">
+                  {{ c.Country }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="ca-state">State</label>
+              <select
+                formControlName="state"
+                id="ca-state"
+                class="form-control"
+              >
+                <option *ngFor="let s of statesArr" [value]="s">
+                  {{ s }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="ca-city">City</label>
+              <input
+                formControlName="city"
+                type="text"
+                class="form-control"
+                id="ca-city"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="ca-pincode">Pincode</label>
+              <input
+                formControlName="pincode"
+                type="number"
+                class="form-control"
+                id="ca-pincode"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-6" formGroupName="permanentAdress">
+            <h2>Permanent Address</h2>
+            <div class="form-group">
+              <label for="pa-country">Country</label>
+              <select
+                formControlName="country"
+                id="pa-country"
+                class="form-control"
+              >
+                <option *ngFor="let c of countriesArr" [value]="c.Country">
+                  {{ c.Country }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="pa-state">State</label>
+              <select
+                formControlName="state"
+                id="pa-state"
+                class="form-control"
+              >
+                <option *ngFor="let s of statesArr" [value]="s">
+                  {{ s }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="pa-city">City</label>
+              <input
+                formControlName="city"
+                type="text"
+                class="form-control"
+                id="pa-city"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="pa-pincode">Pincode</label>
+              <input
+                formControlName="pincode"
+                type="number"
+                class="form-control"
+                id="pa-pincode"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div formArrayName="skills">
+          <h2>Skills</h2>
+          <div
+            *ngFor="let skill of skillArr.controls; let i = index"
+            class="row"
+          >
+            <div class="col-10">
+              <div class="form-group">
+                <input type="text" [formControlName]="i" class="form-control" />
+              </div>
+            </div>
+            <div class="col-2" *ngIf="i > 0">
+              <button
+                type="button"
+                (click)="removeSkill(i)"
+                class="btn btn-sm btn-danger"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+          <div class="row mb-5">
+            <div class="col-12">
+              <button
+                type="button"
+                [disabled]="f['skills'].invalid"
+                *ngIf="skillArr.length < 5; else maxSkills"
+                (click)="addSkills()"
+                class="btn btn-info"
+              >
+                Add Skill
+              </button>
+              <ng-template #maxSkills>
+                <p class="text-success">you can add 5 skills at max</p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <div formArrayName="dependents">
+          <h2>Dependents</h2>
+          <div
+            class="row"
+            *ngFor="let d of dependentsArr.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <h3 class="col-12">Dependent {{ i + 1 }}</h3>
+            <div class="col-md col-sm-12">
+              <div class="form-group">
+                <input
+                  type="text"
+                  formControlName="fullName"
+                  placeholder="Full Name"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-md col-sm-12">
+              <div class="form-group">
+                <input
+                  type="text"
+                  formControlName="relationship"
+                  placeholder="Relationship"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-md col-sm-12">
+              <div class="form-group">
+                <input
+                  type="text"
+                  formControlName="citizenship"
+                  placeholder="Citizenship"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-md col-sm-12">
+              <div class="form-group">
+                <select
+                  formControlName="isTravelingWithYou"
+                  class="form-control"
+                >
+                  <option [ngValue]="true">Yes</option>
+                  <option [ngValue]="false">No</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md col-sm-12">
+              <div class="form-group">
+                <button
+                  *ngIf="i > 0"
+                  (click)="removeDependent(i)"
+                  type="button"
+                  class="btn btn-sm btn-danger"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-5">
+            <div class="col-12">
+              <button
+                [disabled]="f['dependents'].invalid"
+                *ngIf="dependentsArr.length < 5; else maxDependents"
+                (click)="addDependents()"
+                type="button"
+                class="btn-sm btn-info"
+              >
+                Add Dependent
+              </button>
+              <ng-template #maxDependents>
+                <p class="text-success">
+                  You can add maximum 5 Dependents only
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                type="text"
+                formControlName="password"
+                id="password"
+                class="form-control"
+              />
+
+              <strong
+                *ngIf="
+                  f['password'].touched && f['password'].hasError('required')
+                "
+                class="text-danger"
+              >
+                password is required field
+              </strong>
+
+              <strong
+                *ngIf="f['password'].dirty && f['password'].hasError('pattern')"
+                class="text-danger"
+              >
+                {{ validationMsgs.password }}
+              </strong>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label for="confirmPassword">confirmPassword</label>
+              <input
+                type="text"
+                formControlName="confirmPassword"
+                id="confirmPassword"
+                class="form-control"
+              />
+
+              <strong
+                *ngIf="
+                  f['password'].valid &&
+                  f['confirmPassword'].invalid &&
+                  !f['confirmPassword'].dirty
+                "
+                class="text-danger"
+              >
+                confirmPassword is required field
+              </strong>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-md btn-primary">Sign Up</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+
+.ng-invalid.ng-touched,
+.ng-invalid.ng-dirty,
+.ng-submitted .ng-invalid{
+    border-color: #ff0000;
+}
+
+.isAddressSame:enabled{
+    outline: 3px solid #007bff;
+    outline-offset: -2px;
+}
+
+.isAddressSame:disabled{
+    outline: 2px solid #ff0000;
+    outline-offset: -2px;
+}
